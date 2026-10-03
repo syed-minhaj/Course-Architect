@@ -37,29 +37,39 @@ export const generateCourse = createServerFn({method: 'POST'})
 
             const {success , course } = await geminiGenerator({course : {topic, userContext, depthLevel}})
             if (!success) return {error : "Failed to generate course" , course: null};
-            const courseCreated = await db.insert(courses).values({courseTitle: course.course_title, introSummary: course.intro_summary , createrId : session.user.id , access : data.access}).returning({id : courses.id , title : courses.courseTitle});
-            if (!courseCreated) return {error : "Failed to create course", course: null};
-            const courseID = courseCreated[0].id;
-            for (let chapterIdx = 0; chapterIdx < course.chapters.length; chapterIdx++) {
-                const chapterData = course.chapters[chapterIdx];
-                const chapterCreated = await db.insert(chapters).values({courseId: courseID, title: chapterData.title, order: chapterIdx}).returning({id: chapters.id});
-                if (!chapterCreated) return {error: "Failed to create chapter", course: null};
-                const chapterID = chapterCreated[0].id;
-                for (const module of chapterData.modules) {
-                    const moduleCreated = await db.insert(modules).values({courseId : courseID, chapterId: chapterID, title : module.title, conceptualDeepDive : module.conceptual_deep_dive}).returning({id : modules.id});
-                    if (!moduleCreated) return {error : "Failed to create module" ,course: null};
-                    const moduleID = moduleCreated[0].id;
-                    for (const resource of module.external_resources) {
-                        await db.insert(externalResources).values({moduleId : moduleID, type : resource.type, title : resource.title, url : resource.url});
-                    }
-                    await db.insert(primaryMissions).values({moduleId : moduleID, title : module.assessment.primary_mission.title, instructions : module.assessment.primary_mission.instructions, rubric : module.assessment.primary_mission.rubric});
-                    for (const quiz of module.assessment.quick_quiz) {
-                        await db.insert(quickQuizzes).values({moduleId : moduleID, question : quiz.question, options : quiz.options, answer : quiz.answer});
+                let courseID: string | null = null;
+                let created: { id: string; title: string };
+                try {
+                const courseCreated = await db.insert(courses).values({courseTitle: course.course_title, introSummary: course.intro_summary , createrId : session.user.id , access : data.access}).returning({id : courses.id , title : courses.courseTitle});
+                if (!courseCreated.length) throw new Error("Failed to create course");
+                courseID = courseCreated[0].id;
+                for (let chapterIdx = 0; chapterIdx < course.chapters.length; chapterIdx++) {
+                    const chapterData = course.chapters[chapterIdx];
+                    const chapterCreated = await db.insert(chapters).values({courseId: courseID, title: chapterData.title, order: chapterIdx}).returning({id: chapters.id});
+                    if (!chapterCreated.length) throw new Error("Failed to create chapter");
+                    const chapterID = chapterCreated[0].id;
+                    for (const module of chapterData.modules) {
+                        const moduleCreated = await db.insert(modules).values({courseId : courseID, chapterId: chapterID, title : module.title, conceptualDeepDive : module.conceptual_deep_dive}).returning({id : modules.id});
+                        if (!moduleCreated.length) throw new Error("Failed to create module");
+                        const moduleID = moduleCreated[0].id;
+                        for (const resource of module.external_resources) {
+                            await db.insert(externalResources).values({moduleId : moduleID, type : resource.type, title : resource.title, url : resource.url});
+                        }
+                        await db.insert(primaryMissions).values({moduleId : moduleID, title : module.assessment.primary_mission.title, instructions : module.assessment.primary_mission.instructions, rubric : module.assessment.primary_mission.rubric});
+                        for (const quiz of module.assessment.quick_quiz) {
+                            await db.insert(quickQuizzes).values({moduleId : moduleID, question : quiz.question, options : quiz.options, answer : quiz.answer});
+                        }
                     }
                 }
-            }
-            console.log("success")
-            return {error : null , course: {id : courseID , title : courseCreated[0].title}};
+                created = { id: courseCreated[0].id, title: courseCreated[0].title };
+                } catch (insertError) {
+                    if (courseID) {
+                        await db.delete(courses).where(eq(courses.id, courseID));
+                    }
+                    throw insertError;
+                }
+                console.log("success")
+                return {error : null , course: created};
 
         }catch(e ){
             console.error(e)
