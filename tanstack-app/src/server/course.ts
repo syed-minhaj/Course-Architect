@@ -6,8 +6,7 @@ import { courses , chapters , modules , externalResources , primaryMissions , qu
 import {z} from "zod"
 import { auth } from "@/lib/auth";
 import { getRequestHeaders } from "@tanstack/react-start-server";
-import { user } from "db/auth-schema";
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 
 
 const courseInputSchema = z.object({
@@ -18,10 +17,8 @@ const courseInputSchema = z.object({
 })
 
 const userAllowedToCreateCourse = async(userID : string) => {
-    const courseCount = await db.select({
-        id : user.id
-    }).from(user).where(eq(user.id , userID)).execute();
-    return courseCount.length < 2;
+    const result = await db.select({ value: count() }).from(courses).where(eq(courses.createrId, userID)).execute();
+    return result[0].value < 2;
 }
 
 export const generateCourse = createServerFn({method: 'POST'})
