@@ -39,6 +39,13 @@ const getCoursee = createServerFn()
         if (!course) {
             throw redirect({to : "/app/course"})
         };
+        if (course.access === "private") {
+            const isCreator = session?.user.id === course.createrId;
+            const isEnrolled = course.student.length > 0;
+            if (!isCreator && !isEnrolled) {
+                throw redirect({to : "/app/course"})
+            }
+        }
         if (course.student.length == 0) return Object.assign(course , {moduleI : 0, isCreator: session?.user.id === course.createrId})
         const completedModules = await db.select({
             moduleId: modules.id,

@@ -33,11 +33,11 @@ const getCourse = createServerFn().inputValidator(z.string()).handler(async ({ d
     if (!course) {
         throw redirect({to : "/app/course"})
     };
-    if (course.student.some((student) => student.userId == session?.user.id)) {
-        return Object.assign(course , {isStudent : true})
-    }else {
-        return Object.assign(course , {isStudent : false})
+    const isStudent = course.student.some((student) => student.userId == session?.user.id);
+    if (course.access === "private" && session?.user.id !== course.createrId && !isStudent) {
+        throw redirect({to : "/app/course"})
     }
+    return Object.assign(course , {isStudent})
 })
 
 const SetView = ({view , setView} : {view : "content" | "Task" , setView : (val : "content" | "Task") => void}) => {
