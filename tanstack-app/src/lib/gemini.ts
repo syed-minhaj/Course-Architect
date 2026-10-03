@@ -42,7 +42,7 @@ type CourseParams = {
 };
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.NEXT_PUBLIC_GENAI_API_KEY, 
+    apiKey: process.env.GEMINI_API_KEY,
 });
 
 function buildPrompt({ topic, userContext, depthLevel }: CourseParams): string {
