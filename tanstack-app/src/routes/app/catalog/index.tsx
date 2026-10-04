@@ -1,5 +1,5 @@
 import { db } from '@/lib/drizzle'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { courses, chapters, modules } from 'db/schema'
 import { userToCourseTaken } from 'db/auth-schema'
 import CoursePreview, { CourseSkeleton } from '../course/components/-coursePreview'
@@ -13,6 +13,7 @@ import { getRequestHeaders } from '@tanstack/react-start-server'
 import { useHash } from '@/hooks/hash'
 import useDebounce from '@/hooks/debounce'
 import Search from '@/components/search'
+import { requireUser } from '@/server/requireUser'
 
 export type course = {
     id : string;
@@ -107,8 +108,7 @@ const getCoursesTaken = createServerFn()
 function CourseSection({tap , search} : {tap : typeof Taps[number] , search : string}) {
     let func = tap == "Inroaled" ? getCoursesTaken : getCoursesCreated
     const loadMoreRef = useRef<HTMLDivElement | null>(null)
-    const navigate = useNavigate()
-    const {data, fetchNextPage , hasNextPage , isFetching , error} = useInfiniteQuery({
+    const {data, fetchNextPage , hasNextPage , isFetching} = useInfiniteQuery({
         queryKey: [tap , search],
         initialPageParam: 0,
         queryFn: ({ pageParam }) => func({ data : {pageParam , search} }),
@@ -134,15 +134,6 @@ function CourseSection({tap , search} : {tap : typeof Taps[number] , search : st
         return () => observer.disconnect()
     }, [fetchNextPage, hasNextPage])
 
-    useEffect(() => {
-        if ((error as Error)?.message === 'UNAUTHORIZED') {
-        navigate({
-            to: '/app/auth/$authView',
-            params: { authView: 'login' },
-        })
-        }
-    }, [error , navigate])
-
     return (
         <div className="w-11/12 mx-auto flex flex-col gap-4 py-8">
             {data?.pages.map((page) =>
@@ -159,6 +150,7 @@ function CourseSection({tap , search} : {tap : typeof Taps[number] , search : st
 
 export const Route = createFileRoute('/app/catalog/')({
     component: RouteComponent,
+    beforeLoad: () => requireUser({ data: { redirectTo: '/app/catalog' } }),
     validateSearch: z.object({
         search: z.string().optional(),
     }),
