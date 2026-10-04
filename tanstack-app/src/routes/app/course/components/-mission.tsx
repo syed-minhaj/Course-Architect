@@ -2,6 +2,7 @@ import { db } from "@/lib/drizzle"
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import {z} from "zod";
+import { useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -59,14 +60,16 @@ export const Mission = ({moduleID} : {moduleID : string }) => {
         queryFn: async() => getMession({data : moduleID}),
         gcTime: 1000 * 60 * 60 * 24 * 7,
     })
-    let finshed  = Array(m.data.rubric.length).fill(false)
+    const [finished, setFinished] = useState<boolean[]>(() => Array(m.data.rubric.length).fill(false))
 
     async function submitAnswer(index : number) {
-        if (finshed[index]) {
+        if (finished[index]) {
             return
         }
-        finshed[index] = true
-        if (finshed.every((item) => item)) {
+        const next = [...finished]
+        next[index] = true
+        setFinished(next)
+        if (next.every((item) => item)) {
             await missionPassed({data : m.data.id})
             m.refetch()
         }
@@ -81,9 +84,10 @@ export const Mission = ({moduleID} : {moduleID : string }) => {
             <p className="text-lg text-foreground/85 ">{m.data.instructions}</p>
             <label className="text-lg font-medium">Tasks :</label>
             {m.data.rubric.map((item , index) => (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3" key={index}>
                     <Checkbox 
-                        onClick={() => submitAnswer(index)}
+                        checked={finished[index]}
+                        onCheckedChange={() => submitAnswer(index)}
                         id={`terms-${index}`}
                     />
                     <Label htmlFor={`terms-${index}`} >
