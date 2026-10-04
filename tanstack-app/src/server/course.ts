@@ -12,7 +12,7 @@ import { eq, count } from "drizzle-orm";
 const courseInputSchema = z.object({
     topic: z.string(),
     userContext: z.string(),
-    depthLevel: z.string(),
+    depthLevel: z.enum(["Surface Level", "Standard", "Deep Dive", "Academic"]),
     access: z.enum(["public" , "private"]).default("public"),
 })
 
