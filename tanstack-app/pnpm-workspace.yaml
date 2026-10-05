@@ -12,12 +12,44 @@ minimumReleaseAgeExclude:
   - kysely@0.28.17
   - '@tanstack/start-server-core@1.167.30'
 overrides:
+  '@babel/core@<=7.29.0': ^7.29.6
+  '@hono/node-server@<1.19.15': ^1.19.15
+  '@simplewebauthn/server@<=13.3.1': ^13.3.2
+  '@tanstack/start-server-core@<1.167.30': ^1.167.30
+  '@vitest/mocker@>=2.1.0 <4.1.11': ^4.1.11
+  baseline-browser-mapping@>=2.0.0 <2.11.0: ^2.11.0
+  better-auth@<1.6.13: ^1.6.13
+  better-auth@>=1.1.3 <1.6.22: ^1.6.22
+  body-parser@>=2.0.0 <2.3.0: ^2.3.0
+  brace-expansion@<1.1.21: ^1.1.21
+  brace-expansion@>=3.0.0 <5.0.7: ^5.0.7
+  brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
+  browserslist@<=4.28.6: ^4.28.7
   esbuild@<=0.24.2: '>=0.25.0'
+  esbuild@>=0.27.3 <0.28.1: ^0.28.1
+  fast-uri@>=3.0.0 <3.1.8: ^3.1.8
   h3@>=2.0.0-beta.0 <=2.0.1-rc.16: '>=2.0.1-rc.17'
-  h3@>=2.0.0-beta.4 <2.0.1-rc.18: '>=2.0.1-rc.18'
+  h3@>=2.0.0-beta.4 <2.0.1-rc.18: ^2.0.1
   h3@>=2.0.1-alpha.0 <=2.0.1-rc.16: '>=2.0.1-rc.17'
   hono@<4.12.14: '>=4.12.14'
+  hono@<4.13.7: ^4.13.7
   ip-address@<=10.1.0: '>=10.1.1'
+  ip-address@<=10.7.0: ^10.7.1
+  js-yaml@>=4.0.0 <4.3.2: ^4.3.2
+  launch-editor@<=2.14.0: ^2.14.1
+  nanoid@<3.3.18: ^3.3.18
+  nanoid@>=4.0.0 <5.1.16: ^5.1.16
+  postcss-selector-parser@>=7.1.0 <7.1.3: ^7.1.3
   postcss@<8.5.10: '>=8.5.10'
+  postcss@<=8.5.22: ^8.5.23
   protobufjs@<7.5.5: '>=7.5.5'
+  protobufjs@>=8.0.0 <=8.6.5: ^8.6.6
+  qs@>=2.2.5 <6.16.0: ^6.16.0
+  seroval@<=1.5.2: ^1.5.3
+  shell-quote@<=1.8.4: ^1.9.0
+  undici@>=7.0.0 <7.29.1: ^7.29.1
   uuid@>=11.0.0 <11.1.1: '>=11.1.1'
+  vite@>=7.0.0 <=7.3.4: ^7.3.5
+  vitest@<3.2.6: ^3.2.6
+  vitest@>=2.1.0 <4.1.11: ^4.1.11
+  ws@>=8.0.0 <8.21.0: ^8.21.0
