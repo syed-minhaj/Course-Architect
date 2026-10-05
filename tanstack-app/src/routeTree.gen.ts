@@ -9,25 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as AppIndexRouteImport } from './routes/app/index'
-import { Route as AppCourseIndexRouteImport } from './routes/app/course/index'
-import { Route as AppCatalogIndexRouteImport } from './routes/app/catalog/index'
-import { Route as AppCourseCourseIDRouteImport } from './routes/app/course/$courseID'
-import { Route as AppAuthAuthViewRouteImport } from './routes/app/auth/$authView'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as AppCourseCreateIndexRouteImport } from './routes/app/course/create/index'
+import { Route as AppAuthAuthViewRouteImport } from './routes/app/auth/$authView'
+import { Route as AppCatalogIndexRouteImport } from './routes/app/catalog/index'
+import { Route as AppCourseIndexRouteImport } from './routes/app/course/index'
+import { Route as AppCourseCourseIDRouteImport } from './routes/app/course/$courseID'
 import { Route as AppCourseCourseIDModuleIDRouteImport } from './routes/app/course/$courseID_.$moduleID'
+import { Route as AppCourseCreateIndexRouteImport } from './routes/app/course/create/index'
 
-const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -35,9 +35,14 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppCourseIndexRoute = AppCourseIndexRouteImport.update({
-  id: '/course/',
-  path: '/course/',
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAuthAuthViewRoute = AppAuthAuthViewRouteImport.update({
+  id: '/auth/$authView',
+  path: '/auth/$authView',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppCatalogIndexRoute = AppCatalogIndexRouteImport.update({
@@ -45,24 +50,14 @@ const AppCatalogIndexRoute = AppCatalogIndexRouteImport.update({
   path: '/catalog/',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppCourseIndexRoute = AppCourseIndexRouteImport.update({
+  id: '/course/',
+  path: '/course/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppCourseCourseIDRoute = AppCourseCourseIDRouteImport.update({
   id: '/course/$courseID',
   path: '/course/$courseID',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppAuthAuthViewRoute = AppAuthAuthViewRouteImport.update({
-  id: '/auth/$authView',
-  path: '/auth/$authView',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppCourseCreateIndexRoute = AppCourseCreateIndexRouteImport.update({
-  id: '/course/create/',
-  path: '/course/create/',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppCourseCourseIDModuleIDRoute =
@@ -71,6 +66,11 @@ const AppCourseCourseIDModuleIDRoute =
     path: '/course/$courseID/$moduleID',
     getParentRoute: () => AppRouteRoute,
   } as any)
+const AppCourseCreateIndexRoute = AppCourseCreateIndexRouteImport.update({
+  id: '/course/create/',
+  path: '/course/create/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -154,18 +154,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -175,11 +175,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/app/course/': {
-      id: '/app/course/'
-      path: '/course'
-      fullPath: '/app/course/'
-      preLoaderRoute: typeof AppCourseIndexRouteImport
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/auth/$authView': {
+      id: '/app/auth/$authView'
+      path: '/auth/$authView'
+      fullPath: '/app/auth/$authView'
+      preLoaderRoute: typeof AppAuthAuthViewRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/app/catalog/': {
@@ -189,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCatalogIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/app/course/': {
+      id: '/app/course/'
+      path: '/course'
+      fullPath: '/app/course/'
+      preLoaderRoute: typeof AppCourseIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/app/course/$courseID': {
       id: '/app/course/$courseID'
       path: '/course/$courseID'
@@ -196,32 +210,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCourseCourseIDRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/app/auth/$authView': {
-      id: '/app/auth/$authView'
-      path: '/auth/$authView'
-      fullPath: '/app/auth/$authView'
-      preLoaderRoute: typeof AppAuthAuthViewRouteImport
+    '/app/course/$courseID_/$moduleID': {
+      id: '/app/course/$courseID_/$moduleID'
+      path: '/course/$courseID/$moduleID'
+      fullPath: '/app/course/$courseID/$moduleID'
+      preLoaderRoute: typeof AppCourseCourseIDModuleIDRouteImport
       parentRoute: typeof AppRouteRoute
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/app/course/create/': {
       id: '/app/course/create/'
       path: '/course/create'
       fullPath: '/app/course/create/'
       preLoaderRoute: typeof AppCourseCreateIndexRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/app/course/$courseID_/$moduleID': {
-      id: '/app/course/$courseID_/$moduleID'
-      path: '/course/$courseID/$moduleID'
-      fullPath: '/app/course/$courseID/$moduleID'
-      preLoaderRoute: typeof AppCourseCourseIDModuleIDRouteImport
       parentRoute: typeof AppRouteRoute
     }
   }
