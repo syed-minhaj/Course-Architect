@@ -23,7 +23,7 @@ export default function Navbar() {
     return (
         <div className='flex flex-row h-12 shrink-0 px-6 md:px-8 items-center gap-4 bg-bg1 border-b border-b-black/50 '>
             <Link to="/app" className='text-2xl  font-irish-grover'>
-                Everything Course
+                Course Architect
             </Link>
             <div className='ml-auto gap-4 flex items-center '>
                 <Link to="/app/catalog" className='sm:flex gap-1 hidden '>

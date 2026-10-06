@@ -1,6 +1,6 @@
-# Everything Course
+# Course Architect
 
-"Everything Course" is an innovative, AI-driven personalized learning platform designed to generate custom curricula tailored to individual user goals and existing skill sets. Leveraging the power of artificial intelligence, it creates a unique learning path for every user, adapting and evolving with their progress.
+"Course Architect" is an innovative, AI-driven personalized learning platform designed to generate custom curricula tailored to individual user goals and existing skill sets. Leveraging the power of artificial intelligence, it creates a unique learning path for every user, adapting and evolving with their progress.
 
 ## Features
 

@@ -15,7 +15,7 @@ function App() {
             <nav className="fixed top-0 w-full z-50 border-b border-border bg-bg2/70 backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-2 group cursor-pointer">
-                        <span className="text-2xl font-irish-grover tracking-wider text-foreground">Everything Course</span>
+                        <span className="text-2xl font-irish-grover tracking-wider text-foreground">Course Architect</span>
                     </div>
 
                     <div className="flex items-center gap-8 text-sm font-medium text-muted-foreground">
@@ -36,7 +36,7 @@ function App() {
                             <Zap className="w-3 h-3 fill-current" /> AI-Driven Personalization
                         </div>
                         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-                            Learn <span className="text-primary underline decoration-amber-400 underline-offset-8">Everything</span> through the power of AI.
+                            Learn <span className="text-primary underline decoration-amber-400 underline-offset-8">anything</span> through the power of AI.
                         </h1>
                         <p className="text-muted-foreground text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
                             Tell us your goal, your current skills, and your target expertise. We'll architect a custom curriculum designed specifically for your brain.
@@ -137,7 +137,7 @@ function App() {
                 <div className="max-w-7xl mx-auto">
                     <div className="grid lg:grid-cols-3 gap-12">
                         <div className="lg:col-span-1 space-y-4">
-                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How we build your <span className="font-irish-grover text-primary">Everything</span></h2>
+                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How we architect your <span className="font-irish-grover text-primary">path</span></h2>
                             <p className="text-muted-foreground leading-relaxed">Most platforms give you a static video player. We give you a living curriculum that adapts to your pace.</p>
                             <ul className="space-y-3 pt-4">
                                 {['Zero content overlap', 'Adaptive skill testing', 'Real-world project focus'].map(text => (
@@ -171,7 +171,7 @@ function App() {
             <section className="py-24 px-6 bg-bg1">
                 <div className="max-w-5xl mx-auto rounded-[3rem] bg-primary p-12 md:p-20 text-center text-primary-foreground relative overflow-hidden shadow-2xl">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent)]" />
-                    <h2 className="text-4xl md:text-6xl font-bold mb-8 relative z-10">Start your Everything Course today.</h2>
+                    <h2 className="text-4xl md:text-6xl font-bold mb-8 relative z-10">Start your Course Architect today.</h2>
                     <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto relative z-10 font-medium leading-relaxed">
                         Stop drowning in bookmarks. Get one focused, AI-architected path that actually gets you to expert status.
                     </p>
@@ -191,7 +191,7 @@ function App() {
                 <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
                     <div className="col-span-2 space-y-6">
                         <div className="flex items-center gap-2">
-                            <span className="text-xl font-irish-grover tracking-wider">Everything Course</span>
+                            <span className="text-xl font-irish-grover tracking-wider">Course Architect</span>
                         </div>
                         <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
                             The world's first truly personalized learning engine. Created for experts, by AI.
@@ -211,7 +211,7 @@ function App() {
                     </div>
                 </div>
                 <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-border flex flex-col md:flex-row justify-between gap-4 text-xs text-muted-foreground font-medium uppercase tracking-tighter">
-                    <span>© 2026 Everything Course — AI Learning Revolution.</span>
+                    <span>© 2026 Course Architect — AI Learning Revolution.</span>
                 </div>
             </footer>
         </div>
