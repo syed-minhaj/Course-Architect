@@ -26,19 +26,15 @@ export default function CreateCourseForm() {
     const navigate = useNavigate()
     const [creatingCourse, setCreatingCourse] = useState(false)
     const [course, setCourse] = useState<{id : string , title : string}|null>(null)
-    const [values, setValues] = useState<DiscoveryData>({
-        topic: "",
-        userContext: "",
-        depthLevel: "Standard",
-        access: "public",
-    });
-
-    useEffect(() => {
-        const course = localStorage.getItem('course')
-        if (course) {
-            setValues(JSON.parse(course))
+    const [values, setValues] = useState<DiscoveryData>(() => {
+        const defaults: DiscoveryData = { topic: "", userContext: "", depthLevel: "Standard", access: "public" };
+        try {
+            const saved = localStorage.getItem('course');
+            return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+        } catch {
+            return defaults;
         }
-    }, [])
+    });
 
     useEffect(() => {
         localStorage.setItem('course' , JSON.stringify(values))
@@ -153,7 +149,7 @@ export default function CreateCourseForm() {
                     <div className="px-1">
                         <Slider
                             disabled={creatingCourse}
-                            defaultValue={[1]}
+                            value={[DEPTH_LABELS.indexOf(values.depthLevel)]}
                             max={3}
                             step={1}
                             onValueChange={handleSliderChange}
