@@ -10,3 +10,8 @@ overrides:
   esbuild@<=0.24.2: ^0.25.0
   vitest@>=2.1.0 <4.1.11: ^4.1.11
   better-call: 1.4.0
+  seroval@<=1.6.2: ^1.6.3
+  '@vitest/mocker@>=2.1.0-beta.7 <4.1.12': ^4.1.12
+  ip-address@<=10.7.3: ^10.7.4
+  launch-editor@<=2.14.1: ^2.14.2
+  vite@>=7.0.0 <=7.3.6: ^7.3.7
