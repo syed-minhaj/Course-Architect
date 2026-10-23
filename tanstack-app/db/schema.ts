@@ -1,8 +1,6 @@
 import {
     pgTable,
-    serial,
     text,
-    varchar,
     integer,
     jsonb,
     primaryKey,
@@ -18,7 +16,7 @@ const accessEnum = pgEnum('text', ["public" , "private"]);
 /* ================= COURSE ================= */
 export const courses = pgTable("courses", {
     id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-    courseTitle: varchar("course_title", { length: 255 }).notNull(),
+    courseTitle: text("course_title").notNull(),
     introSummary: text("intro_summary").notNull(),
     createrId: text("creater_id").notNull(),
     access : accessEnum("access").notNull().default("public"),
@@ -37,7 +35,7 @@ export const chapters = pgTable("chapters", {
     courseId: text("course_id")
         .references(() => courses.id, { onDelete: "cascade" })
         .notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
+    title: text("title").notNull(),
     order: integer("order").notNull(),
 }, (table) => [
     index("chapter_courseId_idx").on(table.courseId),
@@ -51,7 +49,7 @@ export const modules = pgTable("modules", {
         .notNull(),
     chapterId: text("chapter_id")
         .references(() => chapters.id, { onDelete: "cascade" }),
-    title: varchar("title", { length: 255 }).notNull(),
+    title: text("title").notNull(),
     conceptualDeepDive: text("conceptual_deep_dive").notNull(),
 } , (table) => [
     index("module_courseId_idx").on(table.courseId),
@@ -66,7 +64,7 @@ export const externalResources = pgTable("external_resources", {
         .references(() => modules.id , { onDelete: "cascade" })
         .notNull(),
     type: typeEnum("type").notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
+    title: text("title").notNull(),
     url: text("url").notNull(),
 } , (table) => [
     index("external_resources_moduleId_idx").on(table.moduleId),
@@ -78,7 +76,7 @@ export const primaryMissions = pgTable("primary_missions", {
     moduleId: text("module_id")
         .references(() => modules.id , { onDelete: "cascade" })
         .notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
+    title: text("title").notNull(),
     instructions: text("instructions").notNull(),
     rubric: jsonb("rubric").$type<string[]>().notNull(),
 } , (table) => [
@@ -93,7 +91,7 @@ export const quickQuizzes = pgTable("quick_quizzes", {
         .notNull(),
     question: text("question").notNull(),
     options: jsonb("options").$type<string[]>().notNull(),
-    answer: varchar("answer", { length: 10 }).notNull(),
+    answer: text("answer").notNull(),
 } , (table) => [
     index("quick_quizzes_moduleId_idx").on(table.moduleId),
 ]);

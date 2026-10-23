@@ -127,6 +127,13 @@
       "when": 1785122433741,
       "tag": "0017_chunky_revanche",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792705154274,
+      "tag": "0018_curious_xorn",
+      "breakpoints": true
     }
   ]
 }
