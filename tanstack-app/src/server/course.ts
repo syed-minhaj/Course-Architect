@@ -35,8 +35,9 @@ export const generateCourse = createServerFn({method: 'POST'})
                 return {error : "Not allowed to create course (max 2 courses per user)" , course: null};
             }
 
-            const {success , course } = await geminiGenerator({course : {topic, userContext, depthLevel}})
-            if (!success) return {error : "Failed to generate course" , course: null};
+            const result = await geminiGenerator({course : {topic, userContext, depthLevel}})
+            if (!result.success) return {error : `Course generation failed [${result.stage}] ${result.reason.slice(0, 200)}` , course: null};
+            const course = result.course;
                 let courseID: string | null = null;
                 let created: { id: string; title: string };
                 try {
