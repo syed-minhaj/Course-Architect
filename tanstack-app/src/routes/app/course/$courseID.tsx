@@ -1,19 +1,18 @@
-import { Separator } from '@/components/ui/separator'
-import { db } from '@/lib/drizzle'
-import { createFileRoute,  Link,  redirect } from '@tanstack/react-router'
+﻿import { Link,  createFileRoute,  redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/react-start'
 import {z} from "zod";
 import { getRequestHeaders } from "@tanstack/react-start-server";
-import { auth } from '@/lib/auth'
 import { userToCourseTaken } from 'db/auth-schema'
 import { useState } from 'react'
-import { courses, modules } from 'db/schema';
-import { primaryMissions, quickQuizzes, userToPrimaryMissionsPassed, userToQuickQuizzesPassed } from 'db/schema';
+import { courses, modules, primaryMissions, quickQuizzes, userToPrimaryMissionsPassed, userToQuickQuizzesPassed  } from 'db/schema';
 import { and, eq } from 'drizzle-orm';
 import { Settings2 } from 'lucide-react';
+import { toast } from 'sonner';
+import Chapter from './components/-chapter';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { auth } from '@/lib/auth'
+import { db } from '@/lib/drizzle'
 
 
 const courseIDSchema = z.string()
@@ -189,26 +188,18 @@ function RouteComponent() {
                     <h3 className='font-medium text-2xl/[250%]'>Course Summary</h3>
                     <p className='text-xl/[250%] text-center'>{course.introSummary}</p>
                 </div>
-                <div className='flex flex-col items-center  max-w-11/12'>
-                    <h3 className='font-medium text-2xl/[250%] pb-5'>Chapters</h3>
-                    {course.chapters.map((chapter, ci) => (
-                        <div key={chapter.id} className='w-full'>
-                            <h4 className='font-semibold text-xl/[200%] pb-2'>{chapter.title}</h4>
-                            {chapter.modules.map((module, mi) => {
-                                const globalIndex = course.chapters.slice(0, ci).reduce((sum, c) => sum + c.modules.length, 0) + mi;
-                                return (
-                                    <div key={module.id}>
-                                        <div className='pr-4 flex flex-row gap-2 w-full text-lg/[100%] sm:text-xl/[100%]'>
-                                            <h6 className='w-fit'>{globalIndex + 1}: </h6>
-                                            <p className='flex-1'>{module.title}</p>
-                                        </div>
-                                        {mi !== chapter.modules.length - 1 && <Separator className="my-4 bg-black/50" />}
-                                    </div>
-                                );
-                            })}
-                            {ci !== course.chapters.length - 1 && <Separator className="my-8 bg-black/70" />}
-                        </div>
-                    ))}
+                <div className='flex flex-col items-center w-190 max-w-11/12'>
+                    <h3 className='font-medium text-2xl/[250%] pb-5'>Course Chapters</h3>
+                    <div className='w-full flex flex-col gap-4'>
+                        {(() => {
+                            let moduleOffset = 0
+                            return course.chapters.map((chapter, ci) => {
+                                const start = moduleOffset
+                                moduleOffset += chapter.modules.length
+                                return <Chapter key={chapter.id} courseID={course.id} index={ci} chapter={chapter} moduleIndexStart={start} firstOpen={ci === 0} />
+                            })
+                        })()}
+                    </div>
                 </div>
             </div>
         </div>
