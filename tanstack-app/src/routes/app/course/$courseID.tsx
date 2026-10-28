@@ -6,7 +6,7 @@ import { userToCourseTaken } from 'db/auth-schema'
 import { useState } from 'react'
 import { courses, modules, primaryMissions, quickQuizzes, userToPrimaryMissionsPassed, userToQuickQuizzesPassed  } from 'db/schema';
 import { and, eq } from 'drizzle-orm';
-import { Settings2 } from 'lucide-react';
+import { ArrowRight, Settings2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Chapter from './components/-chapter';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -154,17 +154,24 @@ function RouteComponent() {
             <div className='w-full h-screen relative '>
                 <div className='bg-[url(/bgImage.webp)] bg-cover bg-center w-full h-full absolute '/>
                 <div className='bg-black/66 w-full h-full absolute flex flex-col justify-center items-center'>
-                    <div className='flex flex-col gap-8 items-center justify-center'>
-                        <h2 className='font-irish-grover text-2xl sm:text-4xl text-center text-white '>{course.courseTitle}</h2>
-                        <div className='flex flex-row gap-6 text-white text-lg font-bold'>
-                            {course.student.length > 0 ?  
-                                <Link to="/app/course/$courseID/$moduleID" params={{courseID : course.id , moduleID : allModules[course.moduleI].id}} 
-                                className='w-37 py-4 text-center rounded-sm  bg-[#3A10E5] disabled:opacity-25' disabled={isLoading} >Continue</Link>
+                    <div className='flex flex-col gap-10 items-center justify-center px-6'>
+                        <div className='flex flex-col items-center gap-4'>
+                            <div className='h-2 w-2 rotate-45 bg-white/60' />
+                            <p className='text-xs uppercase tracking-[0.35em] text-white/60'>Course</p>
+                            <h2 className='font-irish-grover text-2xl sm:text-4xl text-center text-white'>{course.courseTitle}</h2>
+                            <p className='text-xs uppercase tracking-widest text-white/50'>
+                                {course.chapters.length} chapters · {allModules.length} modules
+                            </p>
+                        </div>
+                        <div className='flex flex-row flex-wrap justify-center gap-4 sm:gap-6 text-white text-lg font-bold'>
+                            {course.student.length > 0 ?
+                                <Link to="/app/course/$courseID/$moduleID" params={{courseID : course.id , moduleID : allModules[course.moduleI].id}}
+                                className='w-37 py-4 flex items-center justify-center gap-2 rounded-sm bg-[#3A10E5] disabled:opacity-25' disabled={isLoading} >Continue <ArrowRight className='h-4 w-4' /></Link>
                             :
-                                <button onClick={() => join({courseID: course.id , moduleID : allModules[0].id})} 
-                                className='w-37 py-4 text-center rounded-sm  bg-[#3A10E5] disabled:opacity-25' disabled={isLoading} >Join Coure</button>
+                                <button onClick={() => join({courseID: course.id , moduleID : allModules[0].id})}
+                                className='w-37 py-4 text-center rounded-sm bg-[#3A10E5] disabled:opacity-25' disabled={isLoading} >Join Course</button>
                             }
-                            <Link to="/app/course/$courseID/$moduleID" params={{courseID : course.id , moduleID:allModules[course.moduleI].id}} className='w-37 py-4 text-center rounded-sm  bg-[#919191]' disabled={isLoading} >
+                            <Link to="/app/course/$courseID/$moduleID" params={{courseID : course.id , moduleID:allModules[course.moduleI].id}} className='w-37 py-4 text-center rounded-sm border border-white/70 bg-white/10 backdrop-blur-sm' disabled={isLoading} >
                                 View Course
                             </Link>
                             {course.isCreator && ( 
@@ -184,12 +191,16 @@ function RouteComponent() {
                 </div>
             </div>
             <div id="detail" className='flex flex-col items-center py-32 gap-28'>
-                <div className='flex flex-col items-center w-190 max-w-11/12'>
-                    <h3 className='font-medium text-2xl/[250%]'>Course Summary</h3>
-                    <p className='text-xl/[250%] text-center'>{course.introSummary}</p>
+                <div className='flex flex-col items-center w-190 max-w-11/12 text-center'>
+                    <div className='h-2 w-2 rotate-45 bg-[#3A10E5] dark:bg-white' />
+                    <h3 className='font-irish-grover text-3xl sm:text-4xl my-6'>Course Summary</h3>
+                    <p className='text-lg sm:text-xl/[220%] text-center max-w-3xl opacity-80'>{course.introSummary}</p>
                 </div>
                 <div className='flex flex-col items-center w-190 max-w-11/12'>
-                    <h3 className='font-medium text-2xl/[250%] pb-5'>Course Chapters</h3>
+                    <div className='flex flex-col items-center pb-8'>
+                        <div className='h-2 w-2 rotate-45 bg-[#3A10E5] dark:bg-white' />
+                        <h3 className='font-irish-grover text-3xl sm:text-4xl mt-6 mb-2'>Course Chapters</h3>
+                    </div>
                     <div className='w-full flex flex-col gap-4'>
                         {(() => {
                             let moduleOffset = 0
